@@ -51,7 +51,7 @@ set_full$race <- factor(set_full$race,labels = c("black", "coloured", "indian", 
 set_full$edu <- factor(set_full$edu, labels = c("<matric", "matric",">matric" ) ,ordered = FALSE)
 set_full$lsm <- factor(set_full$lsm, labels = c("LSM1-2", "LSM3-4", "LSM5-6", "LSM7-8", "LSM9-10"), ordered = FALSE)
 set_full$sex <- factor(set_full$sex, labels = c("male", "female"), ordered = FALSE)
-set_full$hh_inc <- factor(set_full$hh_inc, labels = c("<R2500","R2500-R6999","R7000-R11999",">=R12000"), ordered = FALSE)
+set_full$hh_inc <- factor(set_full$hh_inc, labels = c("<R5000","R5000-R10999","R11000-R19999","R20000+"), ordered = FALSE)
 set_full$year <- factor(set_full$year, ordered = FALSE)
 
 
@@ -69,7 +69,7 @@ plot_demogs <- function(set, category, palette = c("Accent", "Spectral", "Paired
   ggplot(by_year) +
     aes_string(x = "year", y = "n", fill = category, label = "label" ) +
     geom_bar(stat = 'identity') +
-    geom_text(position = "stack", size = 3) +
+    geom_text(position = position_stack(vjust = 0.5), size = 4) +
     labs(y = "count", title = title) +
     scale_fill_brewer(palette = palette) +
     guides(fill = guide_legend(title = NULL))
