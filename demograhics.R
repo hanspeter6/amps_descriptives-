@@ -1,5 +1,6 @@
 # packages
 library(tidyverse)
+library(gridExtra)
 
 ##read in files:
 
@@ -68,29 +69,53 @@ plot_demogs <- function(set, category, palette = c("Accent", "Spectral", "Paired
   
   ggplot(by_year) +
     aes_string(x = "year", y = "n", fill = category, label = "label" ) +
-    geom_bar(stat = 'identity') +
-    geom_text(position = position_stack(vjust = 0.5), size = 4) +
+    geom_bar(stat = 'identity', width = 0.7) +
+    geom_text(position = position_stack(vjust = 0.5), size = 3) +
     labs(y = "count", title = title) +
     scale_fill_brewer(palette = palette) +
-    guides(fill = guide_legend(title = NULL))
+    # guides(fill = guide_legend(title = NULL)) +
+    theme(plot.title = element_text(size = 16),
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          legend.text = element_text(size = 10),
+          legend.title = element_blank(),
+          legend.key.size = unit(0.5, "cm"),
+          panel.spacing = unit(0.02, "pt"),
+          text = element_text(size = 10),
+          legend.spacing.x = unit(0.2, 'cm')
+          
+          )
 }
 
-jpeg('demog_sex.jpeg', quality = 100, type = "cairo")
-plot_demogs(set_full, category = "sex", palette = "Accent", title = "Gender")
-dev.off()
-jpeg('demog_age.jpeg', quality = 100, type = "cairo")
-plot_demogs(set_full, category = "age", palette = "Spectral", title = "Age Groups")
-dev.off()
-jpeg('demog_race.jpeg', quality = 100, type = "cairo")
-plot_demogs(set_full, category = "race", palette = "Paired", title = "Population Groups")
-dev.off()
-jpeg('demog_edu.jpeg', quality = 100, type = "cairo")
-plot_demogs(set_full, category = "edu", palette = "Pastel2", title = "Education")
-dev.off()
-jpeg('demog_hh_inc.jpeg', quality = 100, type = "cairo")
-plot_demogs(set_full, category = "hh_inc", palette = "Set2", title = "Household Income")
-dev.off()
-jpeg('demog_lsm.jpeg', quality = 100, type = "cairo")
-plot_demogs(set_full, category = "lsm", palette = "Set3", title = "Living Standards Measure")
+d1 <- plot_demogs(set_full, category = "sex", palette = "Accent", title = "Gender")
+d2 <- plot_demogs(set_full, category = "age", palette = "Spectral", title = "Age Groups")
+d3 <- plot_demogs(set_full, category = "race", palette = "Paired", title = "Population Groups")
+d4 <- plot_demogs(set_full, category = "edu", palette = "Pastel2", title = "Education")
+d5 <- plot_demogs(set_full, category = "hh_inc", palette = "Set2", title = "Household Income")
+d6 <- plot_demogs(set_full, category = "lsm", palette = "Set3", title = "Living Standards Measure")
+
+pdf(file = "demogs_all.pdf", width = 17, height = 12, family = "Helvetica") # defaults to 7 x 7 inches
+grid.arrange(d1,d2,d3,d4,d5,d6, nrow = 3, ncol = 2)
 dev.off()
 
+
+# #PREVIOUS
+# jpeg('demog_sex.jpeg', quality = 100, type = "cairo")
+# plot_demogs(set_full, category = "sex", palette = "Accent", title = "Gender")
+# dev.off()
+# jpeg('demog_age.jpeg', quality = 100, type = "cairo")
+# plot_demogs(set_full, category = "age", palette = "Spectral", title = "Age Groups")
+# dev.off()
+# jpeg('demog_race.jpeg', quality = 100, type = "cairo")
+# plot_demogs(set_full, category = "race", palette = "Paired", title = "Population Groups")
+# dev.off()
+# jpeg('demog_edu.jpeg', quality = 100, type = "cairo")
+# plot_demogs(set_full, category = "edu", palette = "Pastel2", title = "Education")
+# dev.off()
+# jpeg('demog_hh_inc.jpeg', quality = 100, type = "cairo")
+# plot_demogs(set_full, category = "hh_inc", palette = "Set2", title = "Household Income")
+# dev.off()
+# jpeg('demog_lsm.jpeg', quality = 100, type = "cairo")
+# plot_demogs(set_full, category = "lsm", palette = "Set3", title = "Living Standards Measure")
+# dev.off()
+# 
